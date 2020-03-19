@@ -42,7 +42,12 @@ static int _init(ml_ctx_t *ctx, int close_old)
 	int inotify_fd;
 
 	fd = epoll_create1(EPOLL_CLOEXEC);
-  inotify_fd = inotify_init();
+  inotify_fd = inotify_init1(IN_NONBLOCK | IN_CLOEXEC);
+
+  /* 
+   * We should only need one inotify_fd,
+   * subsequent watches can be added to it.
+   * */
 
   if (fd < 0 || inotify_fd < 0) {
 		return -1;
@@ -240,6 +245,10 @@ int ml_exit(ml_ctx_t *ctx)
 			continue;
 
 		switch (w->type) {
+    case MINILOOP_TIMER_TYPE:
+			ml_timer_stop(w);
+			break;
+
 		case MINILOOP_IO_TYPE:
 			ml_io_stop(w);
 			break;
@@ -248,9 +257,9 @@ int ml_exit(ml_ctx_t *ctx)
 			ml_signal_stop(w);
 			break;
 
-		case MINILOOP_TIMER_TYPE:
-			ml_timer_stop(w);
-			break;
+    case MINILOOP_FS_TYPE:
+      // FIXME
+      break;
 
 		case MINILOOP_EVENT_TYPE:
 			ml_event_stop(w);
@@ -375,6 +384,10 @@ int ml_run(ml_ctx_t *ctx, int flags)
 				if (!w->u.t.timeout)
 					ml_timer_stop(w);
 				break;
+
+      case MINILOOP_FS_TYPE:
+        // FIXME
+        break;
 
 			case MINILOOP_EVENT_TYPE:
 				if (read(w->fd, &exp, sizeof(exp)) != sizeof(exp))

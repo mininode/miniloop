@@ -77,7 +77,7 @@ int ml_event_post(ml_t *w)
 		return -1;
 
 	return 0;
-}
+
 
 /**
  * Stop a generic event watcher

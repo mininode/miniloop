@@ -2,6 +2,7 @@
  *
  * Copyright (c) 2012       Flemming Madsen <flemming!madsen()madsensoft!dk>
  * Copyright (c) 2013-2019  Joachim Nilsson <troglobit()gmail!com>
+ * Copyright (c) 2020       Alex Caudill <alex.caudill@pm.me>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,6 +63,49 @@ typedef struct ml {
 	ml_ctx_t      *ctx;
 } ml_t;
 
+typedef struct ml_fs {
+  int to_be_done;
+} ml_fs_t;
+
+typedef enum {
+  ML_FS_UNKNOWN = -1,
+  ML_FS_CUSTOM,
+  ML_FS_OPEN,
+  ML_FS_CLOSE,
+  ML_FS_READ,
+  ML_FS_WRITE,
+  ML_FS_SENDFILE,
+  ML_FS_STAT,
+  ML_FS_LSTAT,
+  ML_FS_FSTAT,
+  ML_FS_FTRUNCATE,
+  ML_FS_UTIME,
+  ML_FS_FUTIME,
+  ML_FS_ACCESS,
+  ML_FS_CHMOD,
+  ML_FS_FCHMOD,
+  ML_FS_FSYNC,
+  ML_FS_FDATASYNC,
+  ML_FS_UNLINK,
+  ML_FS_RMDIR,
+  ML_FS_MKDIR,
+  ML_FS_MKDTEMP,
+  ML_FS_RENAME,
+  ML_FS_SCANDIR,
+  ML_FS_LINK,
+  ML_FS_SYMLINK,
+  ML_FS_READLINK,
+  ML_FS_CHOWN,
+  ML_FS_FCHOWN,
+  ML_FS_REALPATH,
+  ML_FS_COPYFILE,
+  ML_FS_LCHOWN,
+  ML_FS_OPENDIR,
+  ML_FS_READDIR,
+  ML_FS_CLOSEDIR,
+  ML_FS_MKSTEMP
+} ml_fs_type;
+
 /*
  * Generic callback for watchers, @events holds %MINILOOP_READ and/or %MINILOOP_WRITE
  * with optional %MINILOOP_PRI (priority data available to read) and any of the
@@ -75,19 +119,19 @@ typedef struct ml {
 typedef void (ml_cb_t)(ml_t *w, void *arg, int events);
 
 /* Public interface */
-int ml_init          (ml_ctx_t *ctx, int maxevents);
+int ml_init           (ml_ctx_t *ctx, int maxevents);
 int ml_exit           (ml_ctx_t *ctx);
 int ml_run            (ml_ctx_t *ctx, int flags);
-
-int ml_io_init        (ml_ctx_t *ctx, ml_t *w, ml_cb_t *cb, void *arg, int fd, int events);
-int ml_io_set         (ml_t *w, int fd, int events);
-int ml_io_start       (ml_t *w);
-int ml_io_stop        (ml_t *w);
 
 int ml_timer_init     (ml_ctx_t *ctx, ml_t *w, ml_cb_t *cb, void *arg, int timeout, int period);
 int ml_timer_set      (ml_t *w, int timeout, int period);
 int ml_timer_start    (ml_t *w);
 int ml_timer_stop     (ml_t *w);
+
+int ml_io_init        (ml_ctx_t *ctx, ml_t *w, ml_cb_t *cb, void *arg, int fd, int events);
+int ml_io_set         (ml_t *w, int fd, int events);
+int ml_io_start       (ml_t *w);
+int ml_io_stop        (ml_t *w);
 
 int ml_signal_init    (ml_ctx_t *ctx, ml_t *w, ml_cb_t *cb, void *arg, int signo);
 int ml_signal_set     (ml_t *w, int signo);

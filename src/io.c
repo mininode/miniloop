@@ -2,7 +2,7 @@
  *
  * Copyright (c) 2012       Flemming Madsen <flemming!madsen()madsensoft!dk>
  * Copyright (c) 2013-2019  Joachim Nilsson <troglobit()gmail!com>
- * Copyright (c) 2020       Alex Caudill <alex.caudill@gmail.com>
+ * Copyright (c) 2020       Alex Caudill <alex.caudill@pm.me>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

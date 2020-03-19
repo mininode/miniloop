@@ -61,11 +61,12 @@
 		list = next;			\
 } while (0)
 
-/* I/O, timer, or signal watcher */
+/* I/O, fs, timer, or signal watcher */
 typedef enum {
 	MINILOOP_IO_TYPE = 1,
 	MINILOOP_SIGNAL_TYPE,
 	MINILOOP_TIMER_TYPE,
+  MINILOOP_FS_TYPE,
 	MINILOOP_EVENT_TYPE,
 } ml_type_t;
 

@@ -29,10 +29,9 @@
 
 #include "miniloop.h"
 
-
 /**
  * Create a signal watcher
- * @param ctx    A valid libuEv context
+ * @param ctx    A valid miniloop context
  * @param w      Pointer to an ml_t watcher
  * @param cb     Signal callback
  * @param arg    Optional callback argument

@@ -16,7 +16,6 @@ CC ?= gcc
 LD ?= ld
 AR ?= ar
 RM ?= rm
-CFLAGS ?= -O2 -std=gnu99
 
 SRCDIR := $(realpath .)
 OBJDIR ?= $(SRCDIR)/obj
@@ -40,7 +39,7 @@ define generateRule
 $2 += $(patsubst %.c, %.o, $(subst $(SRCDIR), $(OBJDIR), ${1}))
 $3 += $(patsubst %.c, %.d, $(subst $(SRCDIR), $(OBJDIR), ${1}))
 $(patsubst %.c, %.o, $(subst $(SRCDIR), $(OBJDIR), ${1})): $(1) | objdir
-	$$(CC) -c -fPIC $$(CFLAGS) $$^ -o $$@ -MT $$@ -MMD -MP -MF$(patsubst %.c, %.d, $(subst $(SRCDIR), $(OBJDIR), ${1})) 
+	$$(CC) -c $$(CFLAGS) $$^ -o $$@ -MT $$@ -MMD -MP -MF$(patsubst %.c, %.d, $(subst $(SRCDIR), $(OBJDIR), ${1})) 
 endef
 
 all: $(OBJDIR)/libminiloop.a
@@ -48,13 +47,14 @@ all: $(OBJDIR)/libminiloop.a
 objdir:
 	mkdir -p $(OBJDIR)/src
 
-CORE_CFLAGS = $(CFLAGS)                           \
-  					-Wall                                 \
-						-I$(SRCDIR)/src                       \
-						-DDUK_OPT_AUGMENT_ERRORS              \
-						-D_POSIX_C_SOURCE=200809L             \
-						-D_GNU_SOURCE                         \
-						-D_XOPEN_SOURCE=700
+CFLAGS = -O2                       \
+				 -std=gnu99                \
+				 -fPIC                     \
+				 -Wall                     \
+				 -I$(SRCDIR)/src           \
+				 -D_POSIX_C_SOURCE=200809L \
+				 -D_GNU_SOURCE             \
+				 -D_XOPEN_SOURCE=700
 
 SRCS = $(SRCDIR)/src/event.c    \
 			 $(SRCDIR)/src/io.c       \
