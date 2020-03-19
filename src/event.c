@@ -63,8 +63,7 @@ int ml_event_init(ml_ctx_t *ctx, ml_t *w, ml_cb_t *cb, void *arg)
  *
  * @return POSIX OK(0) or non-zero with @param errno set on error.
  */
-int ml_event_post(ml_t *w)
-{
+int ml_event_post(ml_t *w) {
 	uint64_t val = 1;
 
 	if (!w || -1 == w->fd) {
@@ -77,7 +76,7 @@ int ml_event_post(ml_t *w)
 		return -1;
 
 	return 0;
-
+}
 
 /**
  * Stop a generic event watcher
@@ -85,8 +84,7 @@ int ml_event_post(ml_t *w)
  *
  * @return POSIX OK(0) or non-zero with @param errno set on error.
  */
-int ml_event_stop(ml_t *w)
-{
+int ml_event_stop(ml_t *w) {
 	if (!_ml_watcher_active(w))
 		return 0;
 
